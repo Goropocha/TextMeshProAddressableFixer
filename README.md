@@ -1,2 +1,2 @@
 # TextMeshProAddressableFixer
-Make TextMesh Pro Addressables
+Make TextMesh Pro's Essential Assets Addressables
