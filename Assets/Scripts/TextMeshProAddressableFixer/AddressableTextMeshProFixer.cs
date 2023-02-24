@@ -53,7 +53,6 @@ public static class AddressableTextMeshProFixer
         // NOTE: When do Build, Default Font Asset will be Empty and need setting Font Asset to TMP_Setting on runtime
         // TODO: Changes your own Fonts Asset Address.
         var fontData = Addressables.LoadAssetAsync<TMP_FontAsset>("Assets/TextMesh Pro/Addressables/Fonts & Materials/LiberationSans SDF.asset").WaitForCompletion();
-        Debug.Log($"find TMP_FontAsset ? {fontData != null}");
         var fontField = typeof(TMP_Settings).GetField("m_defaultFontAsset", BindingFlags.NonPublic | BindingFlags.Instance);
         fontField.SetValue(TMP_Settings.instance, fontData);
     }
@@ -65,7 +64,8 @@ public static class AddressableTextMeshProFixer
     public static void FixedTextMeshProInEditorMode()
     {
         var settingsInstance = typeof(TMP_Settings).GetField("s_Instance", BindingFlags.NonPublic | BindingFlags.Static);
-        var settingsPath = AssetDatabase.FindAssets("t:TMP_Settings").Select(d => AssetDatabase.GUIDToAssetPath(d)).First(path => path.Contains("TMP Settings"));
+        var settingsPath = AssetDatabase.FindAssets("t:TMP_Settings").Select(d => AssetDatabase.GUIDToAssetPath(d)).FirstOrDefault(path => path.Contains("TMP Settings"));
+        if (settingsPath == null) return;
         var settings = AssetDatabase.LoadAssetAtPath<TMP_Settings>(settingsPath);
         settingsInstance.SetValue(null, settings);
     }

@@ -53,5 +53,5 @@ public class TMProDefaultFontAssetExcludeBuild : IPreprocessBuildWithReport, IPo
     /// </summary>
     /// <returns>TMP_Settingsのアセットパス</returns>
     private string GetTMPSettingsPath()
-        => AssetDatabase.FindAssets("t:TMP_Settings").Select(d => AssetDatabase.GUIDToAssetPath(d)).First(path => path.Contains("TMP Settings"));
+        => AssetDatabase.FindAssets("t:TMP_Settings").Select(d => AssetDatabase.GUIDToAssetPath(d)).FirstOrDefault(path => path.Contains("TMP Settings"));
 }
