@@ -6,8 +6,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
 /// <summary>
-/// TextMesh ProのDefault Font Assetをビルド時に除く処理
-/// NOTE: Default Font Asset を空にしないと Resources としてビルドインされてしまう対策
+/// Process to remove Default Font Asset in TextMesh Pro at build
 /// </summary>
 public class TMProDefaultFontAssetExcludeBuild : IPreprocessBuildWithReport, IPostprocessBuildWithReport
 {
@@ -17,14 +16,14 @@ public class TMProDefaultFontAssetExcludeBuild : IPreprocessBuildWithReport, IPo
     private object _defaultFontAsset = null;
 
     /// <summary>
-    /// ビルド前の処理
+    /// OnPreprocessBuild
     /// </summary>
     /// <param name="report"></param>
     public void OnPreprocessBuild(BuildReport report)
     {
         var settings = AssetDatabase.LoadAssetAtPath<TMP_Settings>(GetTMPSettingsPath());
         if (settings == null) return;
-        // TMP_Settings の Default Font Asset を取得する
+        // Get Default Font Asset from TMP_Settings
         _defaultFontAsset = _defaultFontAssetFieldInfo.GetValue(settings);
         if (_defaultFontAsset == null) return;
 
@@ -33,7 +32,7 @@ public class TMProDefaultFontAssetExcludeBuild : IPreprocessBuildWithReport, IPo
     }
 
     /// <summary>
-    /// ビルド後の処理
+    /// OnPostprocessBuild
     /// </summary>
     /// <param name="report"></param>
     public void OnPostprocessBuild(BuildReport report)
@@ -41,7 +40,7 @@ public class TMProDefaultFontAssetExcludeBuild : IPreprocessBuildWithReport, IPo
         var settings = AssetDatabase.LoadAssetAtPath<TMP_Settings>(GetTMPSettingsPath());
         if (settings == null || _defaultFontAsset == null) return;
 
-        // NOTE: 開発で問題が発生しないように戻す
+        // NOTE: Revert asset to avoid problems in development
         _defaultFontAssetFieldInfo.SetValue(settings, _defaultFontAsset);
         _defaultFontAsset = null;
         EditorUtility.SetDirty(settings);
@@ -49,9 +48,9 @@ public class TMProDefaultFontAssetExcludeBuild : IPreprocessBuildWithReport, IPo
     }
 
     /// <summary>
-    /// TMP_Settingsのアセットパスを取得する
+    /// Get Asset Path of TMP_Settings
     /// </summary>
-    /// <returns>TMP_Settingsのアセットパス</returns>
+    /// <returns></returns>
     private string GetTMPSettingsPath()
         => AssetDatabase.FindAssets("t:TMP_Settings").Select(d => AssetDatabase.GUIDToAssetPath(d)).FirstOrDefault(path => path.Contains("TMP Settings"));
 }
