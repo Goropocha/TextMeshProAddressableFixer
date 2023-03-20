@@ -11,6 +11,7 @@ Make TextMesh Pro's Essential Resources Addressables.
 # How to Use
 * Download .unitypackage form [Release page](https://github.com/Goropocha/TextMeshProAddressableFixer/releases) and install it.
 * Open `AddressableTextMeshProFixer.cs` and customize both `TMP_Setting` and `TMP_FontAsset` Address used for `Addressables.LoadAssetAsync`. (See sample project)
+* Move Essential Resources form Resources Folder and do Addressables.
 
 # Licence
 * [MIT](https://github.com/Goropocha/TextMeshProAddressableFixer/blob/main/LICENSE)
